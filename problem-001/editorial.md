@@ -67,4 +67,4 @@ This easily passes within the 2.0 second time limit for $N \le 10^5$, $M \le 2 \
 ---
 
 ### Author's Note
-I originally mapped out the logic for this problem during a late-night session while preparing for the upcoming QuantFest offline prelims. If you are sitting around an 1800 rating, the realization that you need to merge KMP with DAG DP should click relatively fast, but managing the memory limits and avoiding state-explosion requires a clean implementation. Best of luck on the August 23rd contest! I'll be surviving on Diet Coke until then.
+I originally mapped out the logic for this problem during a late-night session while preparing for the upcoming QuantFest offline prelims. If you are sitting around an 1800 rating, the realization that you need to merge KMP with DAG DP should click relatively fast, but managing the memory limits and avoiding state-explosion requires a clean implementation. Best of luck! I'll be surviving on Diet Coke until then.
