@@ -1,6 +1,11 @@
 // generator.cpp
 #include "testlib.h"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <set>
+#include <algorithm>
+
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -14,42 +19,37 @@ int main(int argc, char* argv[]) {
     int rem_m = 200000;
     
     for (int i = 0; i < t; i++) {
+        // 1. Determine constraints for this test case
         int max_n_allowed = min(rem_n, 100000);
         if (max_n_allowed < 1) max_n_allowed = 1;
         
-        // Force the last test case to absorb the remaining N and M to test constraints
         int n = (i == t - 1) ? max_n_allowed : rnd.next(1, max_n_allowed);
         
         long long max_possible_edges = 1LL * n * (n - 1) / 2;
         int max_m_allowed = min({(long long)rem_m, max_possible_edges, 200000LL});
-        int m = (i == t - 1) ? max_m_allowed : rnd.next(0, max_m_allowed);
+        int target_m = (i == t - 1) ? max_m_allowed : rnd.next(0, max_m_allowed);
 
         rem_n -= n;
-        rem_m -= m;
-
-        cout << n << " " << m << "\n";
         
-        // Generate vertex characters
+        // 2. Generate vertex characters
         string c = "";
         for(int j = 0; j < n; j++) {
             c += (char)('a' + rnd.next(0, 25));
         }
-        cout << c << "\n";
 
-        // Generate pattern
+        // 3. Generate pattern
         int p_len = rnd.next(1, min(20, n + 5)); 
         string p = "";
         for(int j = 0; j < p_len; j++) {
             p += (char)('a' + rnd.next(0, 25));
         }
-        cout << p << "\n";
 
-        // Generate DAG edges
+        // 4. Generate DAG edges
         set<pair<int, int>> edges;
         vector<pair<int, int>> edge_list;
         
         int edge_attempts = 0;
-        while(edge_list.size() < m && edge_attempts < m * 5) {
+        while((int)edge_list.size() < target_m && edge_attempts < target_m * 5) {
             edge_attempts++;
             int u = rnd.next(1, n - 1);
             int v = rnd.next(u + 1, n); // u < v ensures it's a DAG and 1 has no incoming
@@ -60,8 +60,11 @@ int main(int argc, char* argv[]) {
             edge_list.push_back({u, v});
         }
         
-        // Ensure vertex 1 connects to something if n > 1 and m > 0 (to avoid 0 paths)
-        if (n > 1 && m > 0) {
+        int actual_m = edge_list.size(); // Lock in the exact number of valid edges
+        rem_m -= actual_m;
+
+        // Ensure vertex 1 connects to something if n > 1 and actual_m > 0
+        if (n > 1 && actual_m > 0) {
             bool one_has_out = false;
             for (auto e : edge_list) {
                 if (e.first == 1) one_has_out = true;
@@ -72,7 +75,12 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        // Shuffle edge printing order
+        // 5. Print the complete test case in correct order
+        cout << n << " " << actual_m << "\n";
+        cout << c << "\n";
+        cout << p << "\n";
+
+        // Shuffle edge printing order so topological order isn't obvious
         shuffle(edge_list.begin(), edge_list.end());
         for (auto e : edge_list) {
             cout << e.first << " " << e.second << "\n";

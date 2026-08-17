@@ -1,4 +1,10 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <queue>
+#include <set>
+#include <algorithm>
+#include <array>
 
 using namespace std;
 
@@ -89,10 +95,10 @@ void solve() {
     }
     
     vector<int> tot(n + 1, 0);
-    vector<array<int, 21>> dp(n + 1);
+    vector<array<long long, 25>> dp(n + 1);
     
     // DP evaluated dynamically traversing via backward topological ordering
-    for (int i = n - 1; i >= 0; --i) {
+    for (int i = (int)topo.size() - 1; i >= 0; --i) {
         int u = topo[i];
         if (adj[u].empty()) {  // Vertex with no outgoing edges (sink)
             tot[u] = 1;
